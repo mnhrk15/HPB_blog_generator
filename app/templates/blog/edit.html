@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}ブログ編集 - HPBブログ自動生成＆サロンボード自動投稿アプリ{% endblock %}
+
+{% block content %}
+<div class="blog-form">
+    <h2>ブログ編集・確認</h2>
+    <p class="description">生成されたブログ内容を確認・編集し、サロンボードに投稿します。</p>
+    
+    <form method="post" action="{{ url_for('blog.post_to_sb_route') }}" id="editForm">
+        <div class="form-group">
+            <label for="title">ブログタイトル</label>
+            <input type="text" name="title" id="title" value="{{ generated_data.title }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="body">ブログ本文</label>
+            <textarea name="body" id="body" rows="10" required>{{ generated_data.body }}</textarea>
+            <small>画像挿入位置は [IMAGE_1], [IMAGE_2] などで指定されています。</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="stylist">投稿スタイリスト</label>
+            <select name="stylist" id="stylist" required>
+                <option value="">選択してください</option>
+                {% for stylist in scraped_data.stylists %}
+                <option value="{{ stylist }}">{{ stylist }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="coupon">クーポン（任意）</label>
+            <select name="coupon" id="coupon">
+                <option value="">選択なし</option>
+                {% for coupon in scraped_data.coupons %}
+                <option value="{{ coupon }}">{{ coupon }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="sb_id">サロンボードID</label>
+            <input type="text" name="sb_id" id="sb_id" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="sb_password">サロンボードパスワード</label>
+            <input type="password" name="sb_password" id="sb_password" required>
+        </div>
+        
+        <div class="image-preview">
+            <h3>使用画像プレビュー</h3>
+            <div class="preview-container">
+                {% for image in images %}
+                <div class="image-preview-item">
+                    <img src="/{{ image.path }}" alt="画像{{ loop.index }}">
+                    <div class="image-info">{{ image.placeholder }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <a href="{{ url_for('blog.create') }}" class="btn btn-secondary">戻る</a>
+            <button type="submit" class="btn btn-primary" id="postBtn">サロンボードに投稿</button>
+        </div>
+    </form>
+    
+    <div class="loading" id="loadingIndicator">
+        <div class="loading-spinner"></div>
+        <p>サロンボードに投稿中です。しばらくお待ちください...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('editForm');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        
+        // フォーム送信時の処理
+        if (form && loadingIndicator) {
+            form.addEventListener('submit', function() {
+                // 入力チェック
+                const title = document.getElementById('title').value;
+                const body = document.getElementById('body').value;
+                const stylist = document.getElementById('stylist').value;
+                const sbId = document.getElementById('sb_id').value;
+                const sbPassword = document.getElementById('sb_password').value;
+                
+                if (!title || !body || !stylist || !sbId || !sbPassword) {
+                    return false;
+                }
+                
+                // ローディング表示
+                loadingIndicator.style.display = 'block';
+                
+                // 送信処理を継続
+                return true;
+            });
+        }
+    });
+</script>
+{% endblock %}

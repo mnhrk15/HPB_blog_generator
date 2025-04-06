@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}ブログ作成 - HPBブログ自動生成＆サロンボード自動投稿アプリ{% endblock %}
+
+{% block content %}
+<div class="blog-form">
+    <h2>ブログ作成</h2>
+    <p class="description">画像をアップロードして、AIによるブログ記事を自動生成します。</p>
+    
+    <form method="post" enctype="multipart/form-data" id="blogForm">
+        <div class="form-group">
+            <label for="store_url">HPB店舗URL</label>
+            <input type="text" name="store_url" id="store_url" placeholder="https://beauty.hotpepper.jp/slnH000XXXXX/" required>
+            <small>例: https://beauty.hotpepper.jp/slnH000XXXXX/</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="images">画像アップロード（複数選択可）</label>
+            <input type="file" name="images" id="images" accept="image/*" multiple required>
+            <div class="image-preview" id="imagePreview"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="template_text">ブログテンプレート（署名など）</label>
+            <textarea name="template_text" id="template_text" rows="3" placeholder="例: お問い合わせは03-XXXX-XXXXまで。担当：山田"></textarea>
+            <small>ブログ本文の最後に追加されます。</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="style">文体スタイル</label>
+            <select name="style" id="style">
+                <option value="casual">カジュアル（親しみやすい）</option>
+                <option value="formal">フォーマル（丁寧）</option>
+                <option value="professional">プロフェッショナル（専門的）</option>
+                <option value="trendy">トレンディ（若者向け）</option>
+            </select>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="generateBtn">ブログ生成</button>
+        </div>
+    </form>
+    
+    <div class="loading" id="loadingIndicator">
+        <div class="loading-spinner"></div>
+        <p>処理中です。しばらくお待ちください...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 画像プレビュー機能
+        const imageInput = document.getElementById('images');
+        const previewContainer = document.getElementById('imagePreview');
+        const form = document.getElementById('blogForm');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        
+        if (imageInput && previewContainer) {
+            imageInput.addEventListener('change', function() {
+                previewImages(this, previewContainer);
+            });
+        }
+        
+        // フォーム送信時の処理
+        if (form && loadingIndicator) {
+            form.addEventListener('submit', function() {
+                // 入力チェック
+                const storeUrl = document.getElementById('store_url').value;
+                const images = document.getElementById('images').files;
+                
+                if (!storeUrl || images.length === 0) {
+                    return false;
+                }
+                
+                // ローディング表示
+                loadingIndicator.style.display = 'block';
+                
+                // 送信処理を継続
+                return true;
+            });
+        }
+    });
+</script>
+{% endblock %}

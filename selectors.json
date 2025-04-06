@@ -1,0 +1,38 @@
+{
+  "hpb": {
+    "stylist": {
+      "page_url_suffix": "stylist/",
+      "stylist_name_selector": "#mainContents .oh.w745 table a, .fs16.b a, .stylistName a, .stylist-list a, .stylist-name a"
+    },
+    "coupon": {
+      "page_url_suffix": "coupon/",
+      "pagination_url_format": "coupon/PN{n}.html",
+      "pagination_selector": ".pa.bottom0.right0",
+      "coupon_name_selector": "p.couponMenuName:not(.fl), .couponTitle, .coupon-title"
+    }
+  },
+  "sb": {
+    "login": {
+      "id_input": "#idPasswordInputForm > div > dl:nth-child(1) > dd > input",
+      "password_input": "#jsiPwInput",
+      "login_button": "#idPasswordInputForm > div > div > a"
+    },
+    "navigation": {
+      "publish_management": "#globalNavi > ul.common-CLPcommon__globalNavi > li:nth-child(2) > a",
+      "blog_button": "#cmsForm > div > div > ul > li:nth-child(9) > a",
+      "new_post_button": "#newPosts"
+    },
+    "blog_form": {
+      "stylist_select": "#stylistId",
+      "category_select": "#blogCategoryCd",
+      "title_input": "#blogTitle",
+      "upload_button": "#upload",
+      "coupon_select_button": ".jsc_SB_modal_trigger",
+      "confirm_button": "#confirm",
+      "nicEdit_area": ".nicEdit-main",
+      "file_select": "#sendFile",
+      "image_upload_submit": ".jscImageUploaderModalSubmitButton",
+      "coupon_setting_button": ".jsc_SB_modal_setting_btn"
+    }
+  }
+}

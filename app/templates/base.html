@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HPBブログ自動生成＆サロンボード自動投稿アプリ{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>HPBブログ自動生成＆サロンボード自動投稿アプリ</h1>
+            {% if session.logged_in %}
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('blog.create') }}">ブログ作成</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">ログアウト</a></li>
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            {% for message in get_flashed_messages() %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+            
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 HPBブログ自動生成＆サロンボード自動投稿アプリ</p>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
