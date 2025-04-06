@@ -199,13 +199,9 @@ def _scrape_coupons(store_url: str, selectors: Dict) -> List[str]:
                     is_coupon = False
                     current_app.logger.debug(f"通常メニューの親要素を検出: {element.text.strip()}")
                 
-                # 価格表記（「→」や「￥」+数字）があるかチェック
+                # クーポンテキストを取得
                 coupon_text = element.text.strip()
-                if '→' not in coupon_text and not re.search(r'￥\d+', coupon_text):
-                    # クーポンには通常、割引価格表記がある
-                    if not re.search(r'[0-9]+%OFF', coupon_text, re.IGNORECASE):  # %OFFの表記もチェック
-                        is_coupon = False
-                        current_app.logger.debug(f"価格表記なしのため除外: {coupon_text}")
+                # 注: 価格表記なしの場合も除外しないように変更
                 
                 # クーポンのみをリストに追加
                 if is_coupon and coupon_text and coupon_text not in coupons and len(coupon_text) > 5:  # 短すぎるテキストは除外
